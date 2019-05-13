@@ -7,6 +7,10 @@ import store from './store';
 
 Vue.config.productionTip = false;
 
+Vue.filter('toUAH', (amount) => {
+  return (amount / 100).toFixed(2);
+});
+
 new Vue({
   router,
   store,

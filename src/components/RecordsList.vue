@@ -3,25 +3,31 @@
     <div class="field">
       <button class="button">Create new</button>
     </div>
-    <div class="columns">
+    <div class="columns" v-for="item in items" :key="item.id">
       <div class="column is-10">
-          Description
+          {{ item.description }}
       </div>
-      <div class="column is-2 has-text-right">144.00</div>
+      <div :class="['column', 'is-2', 'has-text-right', {
+            'has-text-success': item.amount > 0,
+            'has-text-danger': item.amount < 0
+            }]"
+      >
+        {{ item.amount | toUAH }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import axios from 'axios';
-
   export default {
     name: 'records-list',
+    computed: {
+      items() {
+        return this.$store.getters.transactions;
+      }
+    },
     created() {
-      axios.get('http://localhost:3000/records')
-        .then(response => {
-          console.log(response);
-        });
+      this.$store.dispatch('requestTransactions');
     }
   };
 </script>
